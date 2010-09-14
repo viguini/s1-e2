@@ -11,6 +11,8 @@ class Repo
   attr_reader :user, :name, :achievements, :commits_count
   
   
+private
+
   def method_missing(id, *args, &block)
     case(id.to_s)
     when /(.*)_count$/

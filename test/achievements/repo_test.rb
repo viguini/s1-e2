@@ -5,7 +5,7 @@ require File.join(File.expand_path(File.dirname(__FILE__)), "..", "test_helper")
 class RepoTest < Test::Unit::TestCase
   describe "new repo" do
     setup do
-      @repo = Repo.new(User.new, 'Example')
+      @repo = Repo.new(User.new("User"), "Repo")
     end
     
     test "has an user" do

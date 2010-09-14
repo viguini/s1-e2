@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'achievements')
+require File.join(File.dirname(__FILE__), "..", "lib", "achievements")
 
-require 'test/unit'
-require 'contest'
+require "test/unit"
+require "contest"
