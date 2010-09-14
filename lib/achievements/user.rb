@@ -1,10 +1,7 @@
 # encoding: utf-8
 
 class User
-  
-  Achievables = {
-    "Repo Owner" => {}
-  }
+  include CountableAttributes
   
   def initialize(name)
     @name = name
@@ -24,14 +21,5 @@ private
   def achieve(name, klass, target, stages)
     @achievements[name] ||= klass.new(name, self, target, stages)
     @achievements[name].update!
-  end
-
-  def method_missing(id, *args, &block)
-    case(id.to_s)
-    when /(.*)_count$/
-      send($1).count
-    else
-      super
-    end
   end
 end
