@@ -2,6 +2,7 @@
 
 class User
   include CountableAttributes
+  include Achievable
   
   def initialize(name)
     @name = name
@@ -14,12 +15,5 @@ class User
   def create_repo(name)
     @repos << Repo.new(self, name)
     achieve("Repo Owner", StaticAchievement, :repos_count, [0,1,5,10,25])
-  end
-
-private
-
-  def achieve(name, klass, target, stages)
-    @achievements[name] ||= klass.new(name, self, target, stages)
-    @achievements[name].update!
   end
 end

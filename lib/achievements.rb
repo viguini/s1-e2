@@ -18,6 +18,15 @@ private
   end
 end
 
+module Achievable
+
+private
+  def achieve(name, klass, target, stages)
+    @achievements[name] ||= klass.new(name, self, target, stages)
+    @achievements[name].update!
+  end
+end
+
 require "achievements/user.rb"
 require "achievements/repo.rb"
 require "achievements/achievement.rb"
