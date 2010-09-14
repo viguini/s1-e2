@@ -16,4 +16,10 @@ class UserTest < Test::Unit::TestCase
       assert_equal 0, @user.repos_count
     end
   end
+  
+  test "can create a repo" do
+    @user = User.new
+    @user.create_repo('Example')
+    assert_equal 1, @user.repos_count
+  end
 end

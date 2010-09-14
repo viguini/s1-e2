@@ -8,6 +8,10 @@ class User
   
   attr_reader :achievements, :repos
   
+  def create_repo(name)
+    @repos << Repo.new(self, name)
+  end
+  
   def method_missing(id, *args, &block)
     case(id.to_s)
     when /(.*)_count$/

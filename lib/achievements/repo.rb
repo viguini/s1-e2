@@ -1,12 +1,14 @@
 # encoding: utf-8
 
 class Repo
-  def initialize
+  def initialize(user, name)
+    @user = user
+    @name = name
     @achievements = []
     @commits_count = 0
   end
   
-  attr_reader :achievements, :commits_count
+  attr_reader :user, :name, :achievements, :commits_count
   
   
   def method_missing(id, *args, &block)
