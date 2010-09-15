@@ -38,13 +38,14 @@ class StaticAchievementTest < Test::Unit::TestCase
     end
   end
   
-  describe "leveling up" do
+  describe "leveling" do
     setup do
       @achievement = StaticAchievement.new("Commiter", ["commit"], :size)
     end
     
     test "with no changes to the owner update does nothing" do
       assert_match /Novice/, @achievement.to_s
+      
       @achievement.update!
       assert_match /Novice/, @achievement.to_s
     end
@@ -56,21 +57,51 @@ class StaticAchievementTest < Test::Unit::TestCase
     end
     
     test "up two levels at once" do
-      @achievement.owner << "commit"
-      @achievement.owner << "commit"
+      2.times { @achievement.owner << "commit" }
       @achievement.update!
       assert_match /Advanced/, @achievement.to_s
     end
     
     test "cannot level up past the last level" do
-      3.times do
-        @achievement.owner << "commit"
-      end
+      3.times { @achievement.owner << "commit" }
       @achievement.update!
       assert_match /Master/, @achievement.to_s
+      
       @achievement.owner << "commit"
       @achievement.update!
       assert_match /Master/, @achievement.to_s
+    end
+    
+    test "down one level" do
+      3.times { @achievement.owner << "commit" }
+      @achievement.update!
+      assert_match /Master/, @achievement.to_s
+      
+      @achievement.owner.pop
+      @achievement.update!
+      assert_match /Advanced/, @achievement.to_s
+    end
+
+    test "down two levels at once" do
+      3.times { @achievement.owner << "commit" }
+      @achievement.update!
+      assert_match /Master/, @achievement.to_s
+      
+      2.times { @achievement.owner.pop }
+      @achievement.update!
+      assert_match /Intermediate/, @achievement.to_s
+    end
+
+    test "cannot level down beneath the first level" do
+      @achievement = StaticAchievement.new("Commiter", ["commit"],
+          :size, [2,3,4,5,6])
+      2.times { @achievement.owner << "commit" }
+      @achievement.update!
+      assert_match /Novice/, @achievement.to_s
+      
+      3.times { @achievement.owner.pop }
+      @achievement.update!
+      assert_match /Dog/, @achievement.to_s
     end
   end
 end

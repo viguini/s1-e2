@@ -31,8 +31,11 @@ class StaticAchievement < Achievement
   attr_reader :target
   
   def update!
-    return if @current_stage == @stages.size - 1
-    if @owner.send(@target) >= @stages[@current_stage+1]
+    t = @owner.send(@target)
+    if @current_stage > 0 && t < @stages[@current_stage]
+      @current_stage -= 1
+      update!
+    elsif @current_stage < @stages.size - 1 && t >= @stages[@current_stage+1]
       @current_stage += 1
       update!
     end
