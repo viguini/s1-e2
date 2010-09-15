@@ -119,3 +119,38 @@ class DescendingStaticAchievementTest < Test::Unit::TestCase
     end
   end
 end
+
+class PercentageAchievementTest < Test::Unit::TestCase
+  test "create a new class inheritting from percentage achievement" do
+    @most_followed = PercentageAchievement.create(20, :size)
+    assert_equal PercentageAchievement, @most_followed.superclass
+    
+    assert_equal 20,    @most_followed.instance.percentage
+    assert_equal :size, @most_followed.instance.target
+  end
+  
+  describe "new descendant of percentage achievement" do
+    setup do
+      @most_followed = PercentageAchievement.create(20, :size).instance
+      @users = [[1], [1,2,3,4,5], [1,2], [1,2,3,4], [1,2,3]]
+    end
+    
+    test "hook candidates" do
+      @most_followed.register(@users[0])
+      assert @most_followed.candidates.include?(@users[0])
+    end
+    
+    test "select achievers rounding down" do
+      @most_followed.register(@users[0])
+      assert_false @most_followed.achievers.include?(@users[0])
+      
+      6.times { @most_followed.register(["follower"]) }
+      assert_equal 1, @most_followed.achievers.size
+    end
+    
+    test "select top achievers based on target" do
+      @users.each {|u| @most_followed.register(u) }
+      assert_equal @users[1], @most_followed.achievers.first
+    end
+  end
+end

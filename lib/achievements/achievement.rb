@@ -7,6 +7,7 @@ class Achievement
     @name = name
     @owner = owner
     @current_stage = 0
+    
     update!
   end
   
@@ -59,3 +60,44 @@ class DescendingStaticAchievement < StaticAchievement
   end
 end
 
+require "singleton"
+
+class PercentageAchievement
+
+  def self.create(percentage, target)
+    Class.new(self) do
+      define_method :percentage do
+        percentage
+      end
+    
+      define_method :target do
+        target
+      end
+    end
+  end
+  
+  include Singleton
+  
+  def initialize
+    @candidates = []
+    @achievers = []
+  end
+  
+  attr_reader :candidates, :achievers
+  
+  def register(candidate)
+    @candidates << candidate
+    if total_achievers > @achievers.size
+      update!
+    end
+  end
+  
+  def update!(candidate = nil)
+    @candidates.sort! { |a,b| b.send(target) <=> a.send(target) }
+    @achievers = @candidates[0...total_achievers]
+  end
+  
+  def total_achievers
+    @candidates.size * percentage/100
+  end
+end

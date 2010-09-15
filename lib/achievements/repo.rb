@@ -9,8 +9,10 @@ class Repo
     @name = name
     @achievements = {}
     @commits_count = 0
+    
     @issues_count = 0
     clear_issue(0)
+    
     if original_repo
       @fork = true
       @name = "Fork of #{original_repo.name}"
@@ -29,12 +31,14 @@ class Repo
 
   def receive_issue(count)
     @issues_count += count
+    
     achieve_issues_cleaner
   end
   
   def clear_issue(count)
     @issues_count -= count
     @issues_count = 0 if @issues_count < 0
+    
     achieve_issues_cleaner
   end
   
