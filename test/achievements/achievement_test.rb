@@ -105,3 +105,17 @@ class StaticAchievementTest < Test::Unit::TestCase
     end
   end
 end
+
+class DescendingStaticAchievementTest < Test::Unit::TestCase
+  
+  describe "new descending static achievement" do
+    setup do
+      @achievement = DescendingStaticAchievement.new("Issues Cleaner",
+          [], :size)
+    end
+    
+    test "starts as a master" do
+      assert_match /Master/, @achievement.to_s
+    end
+  end
+end

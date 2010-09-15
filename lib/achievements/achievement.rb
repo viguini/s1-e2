@@ -42,3 +42,20 @@ class StaticAchievement < Achievement
   end
 end
 
+class DescendingStaticAchievement < StaticAchievement
+  def initialize(name, owner, target, stages = [4,3,2,1,0])
+    super
+  end
+  
+  def update!
+    t = @owner.send(@target)
+    if @current_stage > 0 && t > @stages[@current_stage]
+      @current_stage -= 1
+      update!
+    elsif @current_stage < @stages.size - 1 && t <= @stages[@current_stage+1]
+      @current_stage += 1
+      update!
+    end
+  end
+end
+

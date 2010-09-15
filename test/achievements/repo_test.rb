@@ -17,19 +17,17 @@ class RepoTest < Test::Unit::TestCase
       assert @repo.name
     end
     
-    test "has no achievements" do
-      assert_equal 0, @repo.achievements_count
+    test "has one achievement" do
+      assert_equal 1, @repo.achievements_count
+    end
+    
+    test "starts as master issue cleaner" do
+      assert_match /Master/, @repo.achievements["Issues Cleaner"].to_s
     end
     
     test "has no commits" do
       assert_equal 0, @repo.commits_count
     end
-  end
-  
-  test "can push commits" do
-    @repo = Repo.new(User.new("User"), "Repo")
-    @repo.push(:commit => 20)
-    assert_equal 20, @repo.commits_count
   end
   
   describe "forked repos" do
@@ -64,12 +62,39 @@ class RepoTest < Test::Unit::TestCase
           @fork.achievements["Committer"]
     end
   end
+
+  test "push commits" do
+    @repo = Repo.new(User.new("User"), "Repo")
+    @repo.push(:commit => 20)
+    assert_equal 20, @repo.commits_count
+  end
+  
+  test "receive an issue" do
+    @repo = Repo.new(User.new("User"), "Repo")
+    @repo.receive(:issue => 1)
+    assert_equal 1, @repo.issues_count
+  end
+  
+  test "clear an issue" do
+    @repo = Repo.new(User.new("User"), "Repo")
+    @repo.receive(:issue => 10)
+    @repo.clear_issue(2)
+    assert_equal 8, @repo.issues_count
+  end
   
   describe "earn achievements" do
     test "when commits are pushed" do
       @repo = Repo.new(User.new("User"), "Repo")
       @repo.push(:commit => 1)
-      assert_equal 1, @repo.achievements_count
+      assert_equal 2, @repo.achievements_count
+    end
+  end
+  
+  describe "achievements level down" do
+    test "when receives an issue" do
+      @repo = Repo.new(User.new("User"), "Repo")
+      @repo.receive(:issue => 1)
+      assert_match /Advanced/, @repo.achievements["Issues Cleaner"].to_s
     end
   end
 end
