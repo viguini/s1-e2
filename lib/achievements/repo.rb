@@ -21,12 +21,10 @@ class Repo
   
   attr_reader :user, :name, :achievements, :commits_count, :issues_count
   
-  def push(options={})
-    if options[:commit]
-      @commits_count += options[:commit]
-      achieve("Committer", StaticAchievement,
-              :commits_count, [0,1,50,1_000,50_000])
-    end
+  def push_commits(count)
+    @commits_count += count
+    achieve("Committer", StaticAchievement,
+            :commits_count, [0,1,50,1_000,50_000])
   end
 
   def receive_issue(count)

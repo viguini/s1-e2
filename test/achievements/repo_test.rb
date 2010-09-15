@@ -33,7 +33,7 @@ class RepoTest < Test::Unit::TestCase
   describe "forked repos" do
     setup do
       @base_repo = Repo.new(User.new("User"), "Base Repo")
-      @base_repo.push(:commit => 100)
+      @base_repo.push_commits(100)
       @fork = Repo.new(User.new("Forker"), "", @base_repo)
     end
     
@@ -65,7 +65,7 @@ class RepoTest < Test::Unit::TestCase
 
   test "push commits" do
     @repo = Repo.new(User.new("User"), "Repo")
-    @repo.push(:commit => 20)
+    @repo.push_commits(20)
     assert_equal 20, @repo.commits_count
   end
   
@@ -85,7 +85,7 @@ class RepoTest < Test::Unit::TestCase
   describe "earn achievements" do
     test "when commits are pushed" do
       @repo = Repo.new(User.new("User"), "Repo")
-      @repo.push(:commit => 1)
+      @repo.push_commits(100)
       assert_equal 2, @repo.achievements_count
     end
   end
