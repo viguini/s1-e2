@@ -71,13 +71,13 @@ class RepoTest < Test::Unit::TestCase
   
   test "receive an issue" do
     @repo = Repo.new(User.new("User"), "Repo")
-    @repo.receive(:issue => 1)
+    @repo.receive_issue(1)
     assert_equal 1, @repo.issues_count
   end
   
   test "clear an issue" do
     @repo = Repo.new(User.new("User"), "Repo")
-    @repo.receive(:issue => 10)
+    @repo.receive_issue(10)
     @repo.clear_issue(2)
     assert_equal 8, @repo.issues_count
   end
@@ -93,7 +93,7 @@ class RepoTest < Test::Unit::TestCase
   describe "achievements level down" do
     test "when receives an issue" do
       @repo = Repo.new(User.new("User"), "Repo")
-      @repo.receive(:issue => 1)
+      @repo.receive_issue(1)
       assert_match /Advanced/, @repo.achievements["Issues Cleaner"].to_s
     end
   end

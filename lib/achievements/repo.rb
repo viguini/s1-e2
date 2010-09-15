@@ -29,11 +29,9 @@ class Repo
     end
   end
 
-  def receive(options = {})
-    if options[:issue]
-      @issues_count += options[:issue]
-      achieve_issues_cleaner
-    end
+  def receive_issue(count)
+    @issues_count += count
+    achieve_issues_cleaner
   end
   
   def clear_issue(count)

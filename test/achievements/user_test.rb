@@ -36,13 +36,13 @@ class UserTest < Test::Unit::TestCase
   
   test "receive a follower" do
     @user = User.new("User")
-    @user.receive(:follower => 1)
+    @user.receive_follower(1)
     assert_equal 1, @user.followers_count
   end
   
   test "lose a follower" do
     @user = User.new("User")
-    @user.receive(:follower => 1)
+    @user.receive_follower(1)
     @user.lose_follower(1)
     assert_equal 0, @user.followers_count
   end
@@ -63,7 +63,7 @@ class UserTest < Test::Unit::TestCase
     
     test "when receives followers" do
       @user = User.new("User")
-      @user.receive(:follower => 1)
+      @user.receive_follower(1)
       assert_equal 1, @user.achievements_count
     end
   end
@@ -71,7 +71,7 @@ class UserTest < Test::Unit::TestCase
   describe "achievements level down" do
     test "when loses followers" do
       @user = User.new("User")
-      @user.receive(:follower => 10)
+      @user.receive_follower(10)
       assert_match /Intermediate/, @user.achievements["Followed"].to_s
       
       @user.lose_follower(5)

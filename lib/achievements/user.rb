@@ -27,17 +27,19 @@ class User
     @repos.select(&:fork?).count
   end
   
-  def receive(options = {})
-    if options[:follower]
-      @followers_count += options[:follower]
-      achieve("Followed", StaticAchievement,
-          :followers_count, [0,1,10,50,250])
-    end
+  def receive_follower(count)
+    @followers_count += count
+    achieve_followed
   end
   
   def lose_follower(count)
     @followers_count -= count
     @followers_count = 0 if @followers_count < 0
+    achieve_followed
+  end
+  
+private
+  def achieve_followed
     achieve("Followed", StaticAchievement,
         :followers_count, [0,1,10,50,250])
   end
