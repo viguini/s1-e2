@@ -27,6 +27,13 @@ class UserTest < Test::Unit::TestCase
     assert_equal 1, @user.repos_count
   end
   
+  test "can fork a repo" do
+    another_repo = Repo.new(User.new("Another"), "Another Repo")
+    @user = User.new("User")
+    @user.fork_repo(another_repo)
+    assert_equal 1, @user.forks_count
+  end
+  
   describe "earn achievements" do
     test "when creates a repo" do
       @user = User.new("User")
